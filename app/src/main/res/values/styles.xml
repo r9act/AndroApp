@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BlackButtonStyle">
+        <item name="android:background">#000000</item> <!-- Black background -->
+        <item name="android:textColor">#FFFFFF</item> <!-- White text -->
+    </style>
+</resources>
