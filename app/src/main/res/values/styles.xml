@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="BlackButtonStyle">
-        <item name="android:background">#000000</item> <!-- Black background -->
-        <item name="android:textColor">#FFFFFF</item> <!-- White text -->
+    <!-- Базовая тема приложения -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Убедитесь, что тема не переопределяет кнопки -->
+    </style>
+
+    <!-- Стиль для черных кнопок -->
+    <style name="BlackButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">#000000</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="backgroundTint">@null</item> <!-- Отключает заливку от темы -->
     </style>
 </resources>
