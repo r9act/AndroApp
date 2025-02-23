@@ -14,23 +14,33 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import com.example.myapplication.DTO.UserDto;
 import com.example.myapplication.entity.AppDatabase;
 import com.example.myapplication.entity.PersonBirthday;
 import com.example.myapplication.R;
 import com.example.myapplication.entity.PersonBirthdayDao;
+import com.example.myapplication.retrofit.ApiService;
 import com.example.myapplication.utils.PersonBirthdayExcelFileParser;
 import com.example.myapplication.utils.PersonBirthdayFileParser;
+import com.example.myapplication.utils.UserIdManager;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
+
 public class MainActivity extends AppCompatActivity {
     private ActivityResultLauncher<String> filePickerLauncher;
 
     private AppDatabase database;
     private PersonBirthdayDao birthdayDao;
+
+    private ApiService apiService;
+    private String androidId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +53,22 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         birthdayDao = database.personBirthdayDao();
 
+        androidId = UserIdManager.getUserId(this);
+        Log.d("UserID", "Unique ID: " + androidId);
+
+
         Button uploadButton = findViewById(R.id.uploadButton);
         Button showAllButton = findViewById(R.id.showAllButton);
         Button deleteAllButton = findViewById(R.id.deleteAllButton);
+
+
+        // Setup Retrofit
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8080/") // Points to localhost:8080 on your machine
+                .addConverterFactory(JacksonConverterFactory.create())
+                .build();
+
+        apiService = retrofit.create(ApiService.class);
 
         filePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
@@ -79,6 +102,12 @@ public class MainActivity extends AppCompatActivity {
         try {
             PersonBirthdayFileParser parser = new PersonBirthdayExcelFileParser();
             List<PersonBirthday> birthdayList = parser.parse(inputStream);
+            UserDto userDto = new UserDto();
+            userDto.setAndroidId(777777L);
+            userDto.setFirstName("Artemchik");
+
+            // Create and send DTO
+            sendToBackend(userDto);
 
             // Save to Room database
             new Thread(() -> {
@@ -99,6 +128,25 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             });
         }
+    }
+
+    private void sendToBackend(UserDto userDto) {
+        Call<Void> call = apiService.sendUser(userDto);
+        call.enqueue(new retrofit2.Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("API", "User sent successfully");
+                } else {
+                    Log.e("API", "Failed: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("API", "Error: " + t.getMessage());
+            }
+        });
     }
 
     private void displayAllBirthdays() {
