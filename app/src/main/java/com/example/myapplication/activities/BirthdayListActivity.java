@@ -1,5 +1,6 @@
 package com.example.myapplication.activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,5 +27,8 @@ public class BirthdayListActivity extends AppCompatActivity {
 
         BirthdayAdapter adapter = new BirthdayAdapter(personBirthdays);
         recyclerView.setAdapter(adapter);
+        // Чёрный фон для статус-бара и панели навигации
+        getWindow().setStatusBarColor(Color.BLACK);  // Статус-бар
+        getWindow().setNavigationBarColor(Color.BLACK);  // Панель навигации
     }
 }
