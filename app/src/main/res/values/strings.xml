@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">BirthdayBot</string>
     <string name="show_birthdays_button">Показать список ДР</string>
     <string name="upload_excel_button">Загрузить список.xlsx</string>
     <string name="delete_all_button">Очистить список</string>
+    <string name="loading">Гружу…</string>
 </resources>

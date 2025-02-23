@@ -2,6 +2,7 @@ package com.example.myapplication.activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -64,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(viewToDraw -> openFilePicker());
         showAllButton.setOnClickListener(viewToDraw -> displayAllBirthdays());
         deleteAllButton.setOnClickListener(view -> deleteAllBirthdays());
+        // Чёрный фон для статус-бара и панели навигации
+        getWindow().setStatusBarColor(Color.BLACK);  // Статус-бар
+        getWindow().setNavigationBarColor(Color.BLACK);  // Панель навигации
     }
 
     private void openFilePicker() {
@@ -99,8 +103,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayAllBirthdays() {
         new Thread(() -> {
+            // 1. Выполняем код в новом потоке
             List<PersonBirthday> birthdays = birthdayDao.getAllBirthdays();
+
+            // 2. Передаём выполнение в главный (UI) поток
             runOnUiThread(() -> {
+                // 3. Запускаем новую Activity в UI-потоке
                 Intent intent = new Intent(MainActivity.this, BirthdayListActivity.class);
                 intent.putExtra("BIRTHDAYS_LIST", new ArrayList<>(birthdays));
                 startActivity(intent);
@@ -108,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    // New method to delete all birthdays
+
     private void deleteAllBirthdays() {
         new AlertDialog.Builder(this)
                 .setTitle("Подтверждение")
