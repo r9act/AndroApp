@@ -7,14 +7,16 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.entity.PersonBirthday;
+
 import java.util.List;
 
 public class BirthdayAdapter extends RecyclerView.Adapter<BirthdayAdapter.ViewHolder> {
 
-    private final List<Birthday> birthdayList;
+    private final List<PersonBirthday> personBirthdayList;
 
-    public BirthdayAdapter(List<Birthday> birthdayList) {
-        this.birthdayList = birthdayList;
+    public BirthdayAdapter(List<PersonBirthday> personBirthdayList) {
+        this.personBirthdayList = personBirthdayList;
     }
 
     @Override
@@ -25,19 +27,30 @@ public class BirthdayAdapter extends RecyclerView.Adapter<BirthdayAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Birthday birthday = birthdayList.get(position);
-        holder.nameTextView.setText(birthday.getName());
-        holder.dateTextView.setText(birthday.getDate().toString());
+        PersonBirthday personBirthday = personBirthdayList.get(position);
+        holder.nameTextView.setText(personBirthday.getName());
+        if (personBirthday.getSurname() != null && !personBirthday.getSurname().isEmpty()) {
+            holder.surnameTextView.setText(personBirthday.getSurname());
+        } else {
+            holder.surnameTextView.setText(null);
+        }
+        var dateDay = personBirthday.getDate().getDayOfMonth();
+        var dateMonth = personBirthday.getDate().getMonth();
+        holder.dateTextView.setText(String.format("%d %s", dateDay, dateMonth));
     }
 
     @Override
-    public int getItemCount() { return birthdayList.size(); }
+    public int getItemCount() {
+        return personBirthdayList.size();
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView nameTextView, dateTextView;
+        TextView nameTextView, surnameTextView, dateTextView;
+
         public ViewHolder(View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
+            surnameTextView = itemView.findViewById(R.id.surnameTextView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
         }
     }
