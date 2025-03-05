@@ -1,20 +1,19 @@
-package com.example.myapplication.DTO;
+package com.example.myapplication.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import androidx.room.Entity;
+import androidx.room.TypeConverters;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class UserDto {
-    @JsonProperty(value = "id")
+@Entity(tableName = "users")
+public class User {
     private Long id;
-    @JsonProperty(value = "foreignId")
     private Long foreignId;
-    @JsonProperty(value = "name")
     private String name;
-    @JsonProperty(value = "isReminderActive")
     private Boolean isReminderActive;
 
-    public UserDto() {
+    public User(Long foreignId, String name, Boolean isReminderActive) {
+        this.foreignId = foreignId;
+        this.name = name;
+        this.isReminderActive = isReminderActive;
     }
 
     public Long getId() {
@@ -41,11 +40,11 @@ public class UserDto {
         this.name = name;
     }
 
-    public Boolean getIsReminderActive() {
+    public Boolean getReminderActive() {
         return isReminderActive;
     }
 
-    public void setIsReminderActive(Boolean isReminderActive) {
-        this.isReminderActive = isReminderActive;
+    public void setReminderActive(Boolean reminderActive) {
+        isReminderActive = reminderActive;
     }
 }

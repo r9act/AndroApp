@@ -9,19 +9,21 @@ public class UserIdManager {
     private static final String PREF_NAME = "UserPrefs";
     private static final String KEY_USER_ID = "user_id";
 
-    public static String getUserId(Context context) {
+    public static long getUserId(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        String userId = prefs.getString(KEY_USER_ID, null);
+        long userId = prefs.getLong(KEY_USER_ID, -1);
 
-        if (userId == null) {
-            // Generate a new UUID if none exists
-            userId = UUID.randomUUID().toString();
-            // Save it to SharedPreferences
+        if (userId == -1) {
+            do {
+                userId = Math.abs(UUID.randomUUID().getMostSignificantBits());
+            } while (userId == -1);
+
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putString(KEY_USER_ID, userId);
+            editor.putLong(KEY_USER_ID, userId);
             editor.apply();
         }
 
         return userId;
     }
 }
+
