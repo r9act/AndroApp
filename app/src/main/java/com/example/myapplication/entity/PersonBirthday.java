@@ -19,6 +19,9 @@ public class PersonBirthday implements Serializable {
     public LocalDate date;
     public Long ownerId;
 
+    public PersonBirthday() {
+    }
+
     public PersonBirthday(String name, String surname, LocalDate date, Long ownerId) {
         this.name = name;
         this.surname = surname;

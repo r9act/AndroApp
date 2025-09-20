@@ -1,5 +1,6 @@
 package com.example.myapplication.adapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class BirthdayAdapter extends RecyclerView.Adapter<BirthdayAdapter.ViewHolder> {
 
+    public static final String TODAY = "Сегодня";
     private final List<PersonBirthday> personBirthdayList;
 
     public BirthdayAdapter(List<PersonBirthday> personBirthdayList) {
@@ -38,6 +40,19 @@ public class BirthdayAdapter extends RecyclerView.Adapter<BirthdayAdapter.ViewHo
         var dateDay = personBirthday.getDate().getDayOfMonth();
         var dateMonth = personBirthday.getDate().getMonth();
         holder.dateTextView.setText(String.format("%d %s", dateDay, dateMonth));
+
+        // Подсветка TODAY
+        if (TODAY.equals(personBirthday.getName())) {
+            holder.itemView.setBackgroundColor(Color.parseColor("#FFEB3B"));
+            holder.nameTextView.setTextColor(Color.BLACK);
+            holder.surnameTextView.setTextColor(Color.BLACK);
+            holder.dateTextView.setTextColor(Color.BLACK);
+        } else {
+            holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+            holder.nameTextView.setTextColor(Color.WHITE);
+            holder.surnameTextView.setTextColor(Color.WHITE);
+            holder.dateTextView.setTextColor(Color.WHITE);
+        }
     }
 
     @Override

@@ -4,4 +4,9 @@
     <string name="upload_excel_button">Загрузить список.xlsx</string>
     <string name="delete_all_button">Очистить список</string>
     <string name="loading">Гружу…</string>
+    <string name="today">Сегодня</string>
+    <string-array name="sort_options">
+        <item>По дате</item>
+        <item>По имени</item>
+    </string-array>
 </resources>
