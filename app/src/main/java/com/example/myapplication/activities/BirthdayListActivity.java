@@ -94,7 +94,10 @@ public class BirthdayListActivity extends AppCompatActivity {
             personBirthdays.add(todayGhost);
         }
         // Сортируем
-        personBirthdays.sort(Comparator.comparing(PersonBirthday::getDate));
+        personBirthdays.sort(
+                Comparator.comparing((PersonBirthday pb) -> pb.getDate().getMonthValue())
+                        .thenComparing(pb -> pb.getDate().getDayOfMonth())
+        );
         // Находим индекс ghost
         int index = personBirthdays.indexOf(todayGhost);
         // Прокручиваем RecyclerView к TODAY
